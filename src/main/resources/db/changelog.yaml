@@ -1,0 +1,88 @@
+databaseChangeLog:
+  - changeSet:
+      id: post_table
+      author: AndreyTarasov
+      preConditions:
+        - onFail: CONTINUE
+        - not:
+            - tableExists:
+                tableName: post
+      changes:
+        - createTable:
+            tableName: post
+            ifNotExist: true
+            schemaName: public
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: title
+                  type: varchar2(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: content
+                  type: varchar2(4000)
+              - column:
+                  name: likes
+                  type: int
+              - column:
+                  name: tags
+                  type: varchar2(100) []
+  - changeSet:
+      id: comment_table
+      author: AndreyTarasov
+      preConditions:
+        - onFail: CONTINUE
+        - not:
+            - tableExists:
+                tableName: comment
+      changes:
+        - createTable:
+            tableName: comment
+            ifNotExist: true
+            schemaName: public
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: post_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_post
+                    references: post(id)
+              - column:
+                  name: content
+                  type: varchar2(4000)
+  - changeSet:
+      id: addAutoIncrement_post_id
+      author: Andrey Tarasov
+      changes:
+        - addAutoIncrement:
+            columnDataType: bigint
+            columnName: id
+            defaultOnNull: false
+            generationType: ALWAYS
+            incrementBy: 1
+            schemaName: public
+            startWith: 1
+            tableName: post
+  - changeSet:
+      id: addAutoIncrement_comment_id
+      author: Andrey Tarasov
+      changes:
+        - addAutoIncrement:
+            columnDataType: bigint
+            columnName: id
+            defaultOnNull: false
+            generationType: ALWAYS
+            incrementBy: 1
+            schemaName: public
+            startWith: 1
+            tableName: comment
