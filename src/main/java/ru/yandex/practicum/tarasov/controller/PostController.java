@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/posts")
+@RequestMapping("posts")
 public class PostController {
     private final PostService postService;
     public PostController(PostService postService) {
@@ -40,7 +40,7 @@ public class PostController {
         return "post";
     }
 
-    @RequestMapping("{id}/edit")
+    @RequestMapping("/{id}/edit")
     public String editPost(@PathVariable("id") int id, Model model) {
         Post post = postService.findById(id);
         model.addAttribute("post", post);
@@ -99,4 +99,31 @@ public class PostController {
         return "redirect:/posts";
     }
 
+    @PostMapping("/{postId}/comments")
+    public String addComment(Model model,
+                            @PathVariable("postId") long postId,
+                            @RequestParam("text") String commentText) {
+        Post post = postService.addComment(postId, commentText);
+        model.addAttribute("post", post);
+        return "post";
+    }
+
+    @PostMapping("/{postId}/comments/{commentId}")
+    public String changeComment(Model model,
+                                @PathVariable("postId") long postId,
+                                @PathVariable("commentId") long commentId,
+                                @RequestParam("text") String commentText) {
+        Post post = postService.changeComment(postId, commentId, commentText);
+        model.addAttribute("post", post);
+        return "post";
+    }
+
+    @PostMapping("/{postId}/comments/{commentId}/delete")
+    public String deleteComment(Model model,
+                                @PathVariable("postId") long postId,
+                                @PathVariable("commentId") long commentId) {
+        Post post = postService.deleteComment(postId, commentId);
+        model.addAttribute("post", post);
+        return "post";
+    }
 }

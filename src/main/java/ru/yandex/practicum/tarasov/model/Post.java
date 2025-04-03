@@ -3,7 +3,9 @@ package ru.yandex.practicum.tarasov.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.MappedCollection;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class Post {
@@ -14,12 +16,12 @@ public class Post {
     private int likes;
     private Set<String> tags;
     @MappedCollection(idColumn = "post_id", keyColumn = "id")
-    private List<Comment> comments;
+    private Map<Long, Comment> comments;
 
     public Post() {
     }
 
-    public Post(long id, String title, String content, int likes, Set<String> tags, List<Comment> comments) {
+    public Post(long id, String title, String content, int likes, Set<String> tags, Map<Long, Comment> comments) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -68,11 +70,15 @@ public class Post {
         this.tags = tags;
     }
 
-    public List<Comment> getComments() {
+    public Map<Long, Comment> getComments() {
         return comments;
     }
 
-    public void setComments(List<Comment> comments) {
+    public List<Comment> getCommentsAsList() {
+        return comments.values().stream().toList();
+    }
+
+    public void setComments(Map<Long, Comment> comments) {
         this.comments = comments;
     }
 
@@ -86,5 +92,9 @@ public class Post {
 
     public void incrementLikes() {
         likes++;
+    }
+
+    public List<String> getTextParts() {
+        return Arrays.stream(content.split("\n")).toList();
     }
 }
