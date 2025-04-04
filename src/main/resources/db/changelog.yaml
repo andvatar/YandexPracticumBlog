@@ -31,7 +31,7 @@ databaseChangeLog:
                   type: int
               - column:
                   name: tags
-                  type: varchar2(100) []
+                  type: VARCHAR(100) ARRAY
   - changeSet:
       id: comment_table
       author: AndreyTarasov

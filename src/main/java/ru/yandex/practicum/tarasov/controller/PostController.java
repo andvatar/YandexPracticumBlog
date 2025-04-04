@@ -9,8 +9,6 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.yandex.practicum.tarasov.model.Post;
 import ru.yandex.practicum.tarasov.service.PostService;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Optional;
 
 @Controller
@@ -24,10 +22,11 @@ public class PostController {
     @RequestMapping
     public String getPosts(Model model,
                            @RequestParam("pageNumber") Optional<Integer> page,
-                           @RequestParam("pageSize") Optional<Integer> size) {
+                           @RequestParam("pageSize") Optional<Integer> size,
+                           @RequestParam(value = "search", required = false) String tag) {
         int currentPage = page.orElse(0);
         int pageSize = size.orElse(10);
-        Page<Post> posts = postService.findAll(currentPage, pageSize);
+        Page<Post> posts = postService.findAll(tag, currentPage, pageSize);
         model.addAttribute("posts", posts.getContent());
         model.addAttribute("paging", posts);
         return "posts";
@@ -56,18 +55,7 @@ public class PostController {
     public String addPost( Post post,
                         @RequestParam(value = "image", required = false) MultipartFile image
                         ) {
-        postService.save(post);
-        //String uploadDir = System.getProperty("user.dir");
-        //File imageFile = new File("/images/" + post.getId() + ".jpg");
-        File imageFile = new File("/images/" + post.getId()).getAbsoluteFile();
-        //var tmp = imageFile.getAbsoluteFile();
-        try {
-            //File temp = imageFile.getParentFile().getAbsoluteFile();
-            //boolean test = imageFile.getParentFile().mkdirs();
-            image.transferTo(imageFile);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        postService.save(post, image);
         return "redirect:/posts";
     }
 
@@ -78,18 +66,7 @@ public class PostController {
                         @RequestParam(value = "image", required = false) MultipartFile image
     ) {
         post.setId(id);
-        postService.save(post);
-        //String uploadDir = System.getProperty("user.dir");
-        //File imageFile = new File("/images/" + post.getId() + ".jpg");
-        File imageFile = new File("/images/" + post.getId()).getAbsoluteFile();
-        //var tmp = imageFile.getAbsoluteFile();
-        try {
-            //File temp = imageFile.getParentFile().getAbsoluteFile();
-            //boolean test = imageFile.getParentFile().mkdirs();
-            image.transferTo(imageFile);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        postService.save(post, image);
         return "redirect:/posts";
     }
 
@@ -97,6 +74,15 @@ public class PostController {
     public String deletePost(@PathVariable("id") long id) {
         postService.delete(id);
         return "redirect:/posts";
+    }
+
+    @PostMapping("{id}/like")
+    public String likePost( Model model,
+                            @PathVariable("id") long id,
+                            @RequestParam("like") boolean like) {
+        Post post = postService.postLike(id, like);
+        model.addAttribute("post", post);
+        return "post";
     }
 
     @PostMapping("/{postId}/comments")

@@ -1,12 +1,10 @@
 package ru.yandex.practicum.tarasov.model;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.MappedCollection;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Post {
     @Id
@@ -96,5 +94,30 @@ public class Post {
 
     public List<String> getTextParts() {
         return Arrays.stream(content.split("\n")).toList();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Post post = (Post) o;
+        return id == post.id && likes == post.likes && Objects.equals(title, post.title) && Objects.equals(content, post.content) && Objects.equals(tags, post.tags) && Objects.equals(comments, post.comments);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, content, likes, tags, comments);
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("id", id)
+                .append("title", title)
+                .append("content", content)
+                .append("likes", likes)
+                .append("tags", tags)
+                .append("comments", comments)
+                .toString();
     }
 }

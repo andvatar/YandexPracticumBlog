@@ -1,5 +1,6 @@
 package ru.yandex.practicum.tarasov.model;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.data.annotation.Id;
 
 import java.util.Objects;
@@ -16,6 +17,7 @@ public class Comment {
 
     public Comment(long id, long postId, String content) {
         this.id = id;
+        this.postId = postId;
         this.content = content;
     }
 
@@ -48,11 +50,20 @@ public class Comment {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Comment comment = (Comment) o;
-        return id == comment.id;
+        return id == comment.id && postId == comment.postId && Objects.equals(content, comment.content);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hash(id, postId, content);
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("id", id)
+                .append("postId", postId)
+                .append("content", content)
+                .toString();
     }
 }
