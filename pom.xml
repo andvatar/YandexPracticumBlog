@@ -2,10 +2,9 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>ru.yandex.practicum.tarasov</groupId>
-  <artifactId>YandexPracticumBlog</artifactId>
+  <artifactId>yandex-practicum-blog</artifactId>
   <packaging>war</packaging>
-  <version>1.0-SNAPSHOT</version>
-  <name>YandexPracticumBlog Maven Webapp</name>
+  <version>1.0</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -133,8 +132,19 @@
     </dependency>
 
   </dependencies>
+
   <build>
-    <finalName>YandexPracticumBlog</finalName>
+    <finalName>yandex-practicum-blog</finalName>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
+      </plugin>
+      <plugin>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.4.0</version>
+      </plugin>
+    </plugins>
   </build>
 
 </project>
