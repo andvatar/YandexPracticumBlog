@@ -2,9 +2,11 @@ package ru.yandex.practicum.tarasov.model;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.Objects;
 
+@Table("comment")
 public class Comment {
     @Id
     private long id;

@@ -13,7 +13,7 @@ import java.util.List;
 public interface PostRepository extends PagingAndSortingRepository<Post, Long>, CrudRepository<Post, Long> {
 
     //@Query("select id, title, content, likes, tags from post where concat_ws(',', tags) like concat('%',:tag,'%')")
-    @Query("select id, title, content, likes, tags from post p where exists(select 1 from unnest(p.tags) as tag where tag = :tag)")
+    @Query("select id, title, content, likes, tags from post p where :tag = ANY(tags)")
     List<Post> findByTag(@Param("tag") String tag);
 
 }

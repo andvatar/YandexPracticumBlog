@@ -1,8 +1,10 @@
 package unit;
 
 import configuration.UnitTestConfiguration;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -30,6 +32,11 @@ class PostServiceTest {
     private CommentRepository commentRepository;
     @Autowired
     private PostService postService;
+
+    @AfterEach
+    void resetMock() {
+        Mockito.reset(postRepository, commentRepository);
+    }
 
     @Test
     public void addCommentToExistingPost() {

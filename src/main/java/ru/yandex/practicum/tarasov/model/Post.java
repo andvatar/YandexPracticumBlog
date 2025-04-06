@@ -3,9 +3,11 @@ package ru.yandex.practicum.tarasov.model;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.MappedCollection;
+import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.*;
 
+@Table("post")
 public class Post {
     @Id
     private long id;
