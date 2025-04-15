@@ -13,6 +13,11 @@ java {
     }
 }
 
+bootJar {
+    archiveFileName = 'YandexPracticumBlog.jar'
+    version =  '2.0'
+}
+
 repositories {
     mavenCentral()
 }
