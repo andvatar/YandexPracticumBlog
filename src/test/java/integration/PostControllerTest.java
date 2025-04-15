@@ -1,47 +1,26 @@
 package integration;
 
-import configuration.IntegrationTestDataSourceConfiguration;
-import configuration.IntegrationTestWebConfiguration;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.jdbc.datasource.init.ScriptUtils;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-
-import javax.sql.DataSource;
-
-import java.sql.SQLException;
+import ru.yandex.practicum.tarasov.BlogApplication;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringJUnitConfig(classes = {IntegrationTestDataSourceConfiguration.class, IntegrationTestWebConfiguration.class})
-@WebAppConfiguration
-@TestPropertySource(locations = "classpath:application_test.properties")
-@ActiveProfiles("Test")
+
+@SpringBootTest(classes = BlogApplication.class)
+@AutoConfigureMockMvc(addFilters = false)
+@ActiveProfiles("test")
 public class PostControllerTest {
 
-    @Autowired
-    private WebApplicationContext webApplicationContext;
 
     @Autowired
-    private DataSource dataSource;
-
     private MockMvc mockMvc;
-
-    @BeforeEach
-    public void setup() throws SQLException {
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        ScriptUtils.executeSqlScript(dataSource.getConnection(), new ClassPathResource("init.sql"));
-    }
 
     @Test
     public void getAllPosts() throws Exception {
