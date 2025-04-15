@@ -27,6 +27,9 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    implementation("ch.qos.logback:logback-core")
+    implementation("ch.qos.logback:logback-classic")
+    implementation("org.slf4j:slf4j-api")
 }
 
 tasks.named('test') {
